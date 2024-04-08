@@ -6,4 +6,4 @@ Integrantes del grupo:
 * Jose Zaragoza - 202230539-8
 * Sebastian Venegas - 202230564-9
 ## Wiki
-Puede acceder a la Wiki mediante el siguiente enlace [enlace](https://github.com/mvpdade/GRP-THE-COOKERS-2024-PROYINF/wiki)
+Puede acceder a la Wiki mediante el siguiente [enlace](https://github.com/mvpdade/GRP-THE-COOKERS-2024-PROYINF/wiki)
