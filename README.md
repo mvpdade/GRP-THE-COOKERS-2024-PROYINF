@@ -1,4 +1,4 @@
-<span style="color:blue">The cookers</span>
+<span style="color:blue">The Cookers</span>
 
 Integrantes del grupo:
 * Benjamin Morales - 202004672-7
