@@ -1,4 +1,4 @@
-<span style="color:blue">The Cookers</span>
+![image](https://github.com/mvpdade/GRP-THE-COOKERS-2024-PROYINF/assets/141437751/7097da4c-fad8-4161-8f83-651c3a554027)<span style="color:blue">The Cookers</span>
 
 Integrantes del grupo:
 * Benjamin Morales - 202004672-7
@@ -19,3 +19,6 @@ Pasos para levantar prototipo:
 el archivo interfaz.py.
 
 3. Ejecutar el archivo interfaz.py, luego de esto se iniciara el prototipo.
+
+
+El siguiente [enlace](https://www.youtube.com/watch?v=p8PVvUhkClU) corresponde al video de muestra del prototipo para el hito 4
