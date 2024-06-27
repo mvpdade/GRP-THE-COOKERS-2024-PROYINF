@@ -1,4 +1,4 @@
-![image](https://github.com/mvpdade/GRP-THE-COOKERS-2024-PROYINF/assets/141437751/7097da4c-fad8-4161-8f83-651c3a554027)<span style="color:blue">The Cookers</span>
+
 
 Integrantes del grupo:
 * Benjamin Morales - 202004672-7
