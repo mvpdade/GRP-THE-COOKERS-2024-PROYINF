@@ -24,4 +24,4 @@ el archivo interfaz.py.
 El siguiente [enlace](https://www.youtube.com/watch?v=p8PVvUhkClU) corresponde al video de muestra del prototipo para el hito 4
 
 
-El siguiente [enlace](https://youtu.be/tBhVHZmBlE4)) corresponde al video de muestra del prototipo para el hito 5
+El siguiente [enlace](https://youtu.be/tBhVHZmBlE4) corresponde al video de muestra del prototipo para el hito 5
