@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecciona Vista de Imágenes DICOM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            text-align: center;
+            margin: 20px;
+        }
+        select, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+        .image-box {
+            text-align: center;
+            background: #fff;
+            padding: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+    <script>
+        function cargarImagen() {
+            var tipoVista = document.getElementById('tipo_vista').value;
+            var formData = new FormData();
+            formData.append('tipo_vista', tipoVista);
+
+            fetch('/imagen', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                var imgUrl = URL.createObjectURL(blob);
+                document.getElementById('dicom-image').src = imgUrl;
+            })
+            .catch(error => console.error('Error al cargar la imagen:', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Selecciona una Vista de Imágenes DICOM</h1>
+
+    <form id="dicom-form" onsubmit="event.preventDefault(); cargarImagen();">
+        <label for="tipo_vista">Selecciona una vista:</label>
+        <select id="tipo_vista" name="tipo_vista">
+            <option value="axial">Vista Axial</option>
+            <option value="coronal">Vista Coronal</option>
+            <option value="sagital">Vista Sagital</option>
+        </select>
+        <button type="submit">Generar Imagen</button>
+    </form>
+
+    <div class="image-box">
+        <img id="dicom-image" src="" alt="Imagen DICOM Generada" />
+    </div>
+</body>
+</html>
