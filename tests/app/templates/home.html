@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block head %}
+<h1>Visualizador de imagenes DICOM</h1>
+{% endblock %}
+
+{% block body %}
+<h1>buenas</h1>
+<nav>
+
+    <a href="{{ url_for('seleccionar_imagen') }}">Seleccionar Imagen</a>
+    <a href="{{ url_for('login') }}">Iniciar Sesión</a>
+</nav>
+{% endblock %}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selecciona Vista de Imágenes DICOM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imagen.css') }}">
+    <nav>
+        <a href="{{ url_for('home') }}">Volver a pagina principal</a>
+    </nav>
+    <script>
+        function cargarImagen() {
+            var tipoVista = document.getElementById('tipo_vista').value;
+            var formData = new FormData();
+            formData.append('tipo_vista', tipoVista);
+    
+            fetch('/imagen', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                var imgUrl = URL.createObjectURL(blob);
+                var imgElement = document.getElementById('dicom-image');
+                imgElement.src = imgUrl;
+                document.getElementById('image-box').style.display = 'block';  // Mostrar el div con la imagen
+            })
+            .catch(error => console.error('Error al cargar la imagen:', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Selecciona una Vista de Imágenes DICOM</h1>
+
+    <form id="dicom-form" onsubmit="event.preventDefault(); cargarImagen();">
+        <label for="tipo_vista">Selecciona una vista:</label>
+        <select id="tipo_vista" name="tipo_vista">
+            <option value="axial">Vista Axial</option>
+            <option value="coronal">Vista Coronal</option>
+            <option value="sagital">Vista Sagital</option>
+        </select>
+        <button type="submit">Generar Imagen</button>
+    </form>
+
+    <div class="image-box" id="image-box" style="display: none;">
+        <img id="dicom-image" src="" alt="Imagen DICOM Generada" />
+    </div>
+</body>
+</html>
