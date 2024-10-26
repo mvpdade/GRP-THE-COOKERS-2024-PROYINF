@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Selecciona Vista de Imágenes DICOM</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imagen.css') }}">
+    <script>
+        function cargarImagen() {
+            var tipoVista = document.getElementById('tipo_vista').value;
+            var ruta = document.getElementById('ruta').value;
+            var formData = new FormData();
+            formData.append('tipo_vista', tipoVista);
+            formData.append('ruta', ruta);
+        
+            fetch('/imagen', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.blob())
+            .then(blob => {
+                var imgUrl = URL.createObjectURL(blob);
+                var imgElement = document.getElementById('dicom-image');
+                imgElement.src = imgUrl;
+                document.getElementById('image-box').style.display = 'block';
+            })
+            .catch(error => console.error('Error al cargar la imagen:', error));
+        }
+    </script>
+{% endblock %}
+
+{% block body %}
+<header class="custom-header p-3">
+    <h1 class="custom-header-title">Visualizador de imágenes DICOM</h1>
+</header>
+
+<aside class="custom-aside">
+    <div class="custom-aside-item">
+        <a href="{{ url_for('inicio') }}" class="custom-aside-link">Volver a página principal</a>
+    </div>
+    <div class="custom-aside-item">
+        <a href="{{ url_for('mis_imagenes')}}" class="custom-aside-link">Volver a mis imagenes</a>
+    </div>
+    <div class="custom-aside-item">
+        <a href="{{ url_for('logout')}}" class="custom-aside-link">Cerrar sesion</a>
+    </div>
+</aside>
+
+<main class="content-area">
+    <h1>Selecciona una Vista de Imágenes DICOM</h1>
+
+    <form id="dicom-form" onsubmit="event.preventDefault(); cargarImagen();">
+        <input type="hidden" id="ruta" name="ruta" value="{{ ruta }}">
+        <label for="tipo_vista">Selecciona una vista:</label>
+        <select id="tipo_vista" name="tipo_vista">
+            <option value="axial">Vista Axial</option>
+            <option value="coronal">Vista Coronal</option>
+            <option value="sagital">Vista Sagital</option>
+        </select>
+        <button type="submit">Generar Imagen</button>
+    </form>
+
+    <div class="image-box" id="image-box" style="display: none;">
+        <img id="dicom-image" src="" alt="Imagen DICOM Generada" />
+    </div>
+</main>
+{% endblock %}
