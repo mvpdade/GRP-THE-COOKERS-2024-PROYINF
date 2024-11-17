@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_file, redirect, url_for, flash
+from flask import Flask, render_template, request, send_file, redirect, url_for, flash, abort
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from models import db, Usuario, Imagen
@@ -10,13 +10,12 @@ import io
 from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 import matplotlib
 from sqlalchemy.exc import IntegrityError
-from PIL import Image,ImageEnhance
+from PIL import Image, ImageEnhance
 from dotenv import load_dotenv
 
 matplotlib.use('Agg')
-load_dotenv(
+load_dotenv()
 
-)
 app = Flask(__name__)
 
 db_user = os.getenv("PG_USER")
@@ -92,17 +91,19 @@ def inicio():
 
 def procesar_imagen(ruta_relativa):
     base_dir = os.path.abspath(image_dir)
-    
-    ruta_absoluta = os.path.abspath(os.path.join(base_dir, ruta_relativa))
-    if not ruta_absoluta.startswith(base_dir):
-        raise ValueError("Acceso no permitido fuera del directorio permitido")
-    
+    # Usa `safe_join` para crear una ruta segura y evitar path traversal
+    ruta_absoluta = safe_join(base_dir, ruta_relativa)
+    if not ruta_absoluta.startswith(base_dir) or not os.path.isdir(ruta_absoluta):
+        # Si el archivo está fuera del directorio seguro, abortar la operación
+        abort(403, description="Acceso no permitido fuera del directorio permitido")
+
     ct_images = [
         entry.name for entry in os.scandir(ruta_absoluta)
         if entry.is_file() and entry.name.endswith('.dcm')
     ]
+
     slices = [
-        pydicom.dcmread(os.path.join(ruta_absoluta, s), force=True)
+        pydicom.dcmread(safe_join(ruta_absoluta, s), force=True)
         for s in ct_images
     ]
     
@@ -127,6 +128,16 @@ def procesar_imagen(ruta_relativa):
     
     return volume3d, axial_aspect_ratio, sagital_aspect_ratio, coronal_aspect_ratio, total_frames
 
+def safe_join(base, paths):
+    # Normalizar la ruta base y la ruta combinada
+    base = os.path.abspath(base)
+    path = os.path.abspath(os.path.join(base,paths))
+
+    # Verificar que la ruta esté dentro de la ruta base
+    if not path.startswith(base):
+        abort(403, description="Acceso no permitido fuera del directorio permitido")
+    return path
+
 def generar_imagen(tipo, ruta, frame_index):
     volume3d, axial_aspect_ratio, sagital_aspect_ratio, coronal_aspect_ratio, _ = procesar_imagen(ruta)
     
@@ -143,11 +154,9 @@ def generar_imagen(tipo, ruta, frame_index):
         ax.set_aspect(sagital_aspect_ratio)
 
     output = io.BytesIO()
-
     FigureCanvas(fig).print_png(output)
     output.seek(0)
     return output
-
 
 @app.route("/imagen", methods=["POST"])
 def mostrar_imagen():
@@ -159,7 +168,7 @@ def mostrar_imagen():
 @app.route("/imagen", methods=["GET"])
 def seleccionar_imagen():
     ruta = request.args.get('ruta')
-    _, _, _, _,total_frames = procesar_imagen(ruta)
+    _, _, _, _, total_frames = procesar_imagen(ruta)
     return render_template("imagen.html", ruta=ruta, total_frames=total_frames)
 
 @app.route("/imagen_frame", methods=["POST"])
@@ -240,9 +249,6 @@ def procesar_carpetas():
 @app.route('/cargar_carpetas', methods=['GET'])
 def cargar_carpetas():
     return render_template('cargar_carpetas.html')
-
-
-
 
 if __name__ == "__main__":
     app.run(debug=True)
