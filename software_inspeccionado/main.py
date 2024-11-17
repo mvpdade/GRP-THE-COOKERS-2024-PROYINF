@@ -90,19 +90,41 @@ def logout():
 def inicio():
     return render_template("inicio.html", user=current_user.name)
 
-def procesar_imagen(ruta):
-    ruta = image_dir + ruta
-    ct_images = os.listdir(ruta)
-    slices = [pydicom.read_file(os.path.join(ruta, s), force=True) for s in ct_images]
+def procesar_imagen(ruta_relativa):
+    # Directorio base donde se encuentran las imágenes
+    base_dir = os.path.abspath(image_dir)
+    
+    # Normalizar y validar la ruta proporcionada por el usuario
+    ruta_absoluta = os.path.abspath(os.path.join(base_dir, ruta_relativa))
+    
+    # Validar que la ruta no salga del directorio base
+    if not ruta_absoluta.startswith(base_dir):
+        raise ValueError("Acceso no permitido fuera del directorio permitido")
+    
+    ct_images = [
+        f for f in os.listdir(ruta_absoluta)
+        if os.path.isfile(os.path.join(ruta_absoluta, f)) and f.endswith('.dcm')
+    ]
+    
+    # Leer los archivos DICOM usando la ruta absoluta
+    slices = [
+        pydicom.dcmread(os.path.join(ruta_absoluta, s), force=True)
+        for s in ct_images
+    ]
+    
+    # Ordenar las imágenes por la posición del paciente
     slices = sorted(slices, key=lambda x: x.ImagePositionPatient[2])
 
+    # Obtener la información de píxeles y grosor del corte
     pixel_spacing = slices[0].PixelSpacing
     slice_thickness = slices[0].SliceThickness
 
+    # Calcular las proporciones de aspecto para los diferentes planos
     axial_aspect_ratio = pixel_spacing[0] / pixel_spacing[1]
     sagital_aspect_ratio = pixel_spacing[1] / slice_thickness
     coronal_aspect_ratio = slice_thickness / pixel_spacing[0]
 
+    # Crear una imagen 3D con los datos
     img_shape = list(slices[0].pixel_array.shape)
     img_shape.append(len(slices))
     volume3d = np.zeros(img_shape)
@@ -112,7 +134,8 @@ def procesar_imagen(ruta):
         volume3d[:, :, i] = array2d
 
     total_frames = len(slices)
-    return volume3d, axial_aspect_ratio, sagital_aspect_ratio, coronal_aspect_ratio,total_frames
+    
+    return volume3d, axial_aspect_ratio, sagital_aspect_ratio, coronal_aspect_ratio, total_frames
 
 def generar_imagen(tipo, ruta, frame_index):
     volume3d, axial_aspect_ratio, sagital_aspect_ratio, coronal_aspect_ratio, _ = procesar_imagen(ruta)
