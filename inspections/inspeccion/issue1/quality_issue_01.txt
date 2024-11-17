@@ -1,8 +1,12 @@
 Issue 1:
+
 Severidad: Blocker
+
 Descripción: La contraseña de la base de datos está presente en el código fuente.
 Impacto: Esta práctica representa una vulnerabilidad crítica de seguridad, ya que la contraseña de la base de datos está expuesta en el código, lo que puede permitir a un atacante acceder a la base de datos del sistema si tiene acceso al código fuente.
+
 Recomendación de SonarCloud: Es recomendable no almacenar credenciales sensibles directamente en el código fuente. En su lugar, utilizar variables de entorno o un archivo de configuración que no sea parte del repositorio de código.
+
 Acción a realizar:
 
 1)Se creará un archivo .env para almacenar de manera segura las credenciales de la base de datos, la SECRET_KEY de Flask y la dirección de almacenamiento de imágenes.
