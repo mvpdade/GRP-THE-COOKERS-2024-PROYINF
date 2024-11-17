@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajustar Contraste</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        /* Estilo para el slider */
+        .slider-container {
+            width: 100%;
+            padding: 20px;
+        }
+        .image-container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('inicio') }}">Inicio</a></li>
+                <li><a href="{{ url_for('mis_imagenes') }}">Mis Imágenes</a></li>
+                <li><a href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <h1>Ajustar Contraste de Imagen</h1>
+        
+        <section>
+            <h2>Imagen generada</h2>
+            <div class="image-container">
+                <img id="dicom-image" src="" alt="Vista DICOM" style="max-width: 100%; height: auto;">
+            </div>
+        </section>
+        
+        <form id="ajustar-contraste-form" action="{{ url_for('ajustar_contraste_imagen') }}" method="POST">
+            <!-- Campo hidden para enviar el frame_index dinámicamente -->
+            <input type="hidden" name="frame_index" id="frame_index" value="{{ frame_index }}">
+            <input type="hidden" name="ruta" value="{{ ruta }}">
+            <input type="hidden" name="tipo_vista" value="{{ tipo_vista }}">
+            <label for="contraste_factor">Ajustar Contraste:</label>
+            <input type="range" id="contraste_factor" name="contraste_factor" min="0.1" max="3" step="0.1" value="1">
+            <button type="submit" style="display: none;">Aplicar Contraste</button>
+        </form>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Proyecto DICOM</p>
+    </footer>
+
+    <script>
+        // Función para actualizar la imagen con el frame seleccionado
+        function actualizarImagen() {
+            fetch("/ajustar_contraste_imagen", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: `tipo_vista=${'{{ tipo_vista }}'}&ruta=${'{{ ruta }}'}&frame_index=${'{{ frame_index }}'}&contraste_factor=${document.getElementById('contraste_factor').value}`
+            })
+            .then(response => response.blob())
+            .then(imageBlob => {
+                const imageUrl = URL.createObjectURL(imageBlob);
+                document.getElementById('dicom-image').src = imageUrl;
+            });
+        }
+
+        // Llamada inicial para cargar la imagen con el valor predeterminado de contraste
+        actualizarImagen();
+
+        // Actualizar la imagen al cambiar el contraste
+        document.getElementById('contraste_factor').addEventListener('input', actualizarImagen);
+    </script>
+</body>
+</html>

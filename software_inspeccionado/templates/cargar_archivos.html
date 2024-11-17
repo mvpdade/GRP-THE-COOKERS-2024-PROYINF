@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargar Carpetas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('inicio') }}">Inicio</a></li>
+                <li><a href="{{ url_for('mis_imagenes') }}">Mis Imágenes</a></li>
+                <li><a href="{{ url_for('logout') }}">Cerrar Sesión</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <h1>Cargar Carpeta de Archivos DICOM</h1>
+        
+        <form id="upload-folder-form" action="{{ url_for('procesar_carpetas') }}" method="POST" enctype="multipart/form-data">
+            <label for="folder-input">Seleccionar Carpeta:</label>
+            <input type="file" id="folder-input" name="files[]" webkitdirectory multiple>
+            <button type="submit">Subir Carpeta</button>
+        </form>
+    </main>
+    
+    <footer>
+        <p>&copy; 2024 Proyecto DICOM</p>
+    </footer>
+</body>
+</html>

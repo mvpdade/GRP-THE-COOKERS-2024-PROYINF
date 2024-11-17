@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block head %}
+    <title>Mis Imágenes</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/imagenes.css') }}">
+{% endblock %}
+
+{% block body %}
+<header class="custom-header p-3">
+    <h1 class="custom-header-title">Visualizador de imágenes DICOM</h1>
+</header>
+
+<nav class="navbar">
+    <div class="ml-auto">
+        <a class="nav-link" href="{{ url_for('inicio') }}">Inicio</a>
+        <a class="nav-link" href="{{ url_for('logout') }}">Cerrar sesión</a>
+    </div>
+</nav>
+
+<main class="container mt-5 content-area">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Mis imagenes DICOM</h2>
+
+            <ul class="list-group">
+                {% for imagen in imagenes %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <form action="{{ url_for('seleccionar_imagen') }}" method="GET" class="d-inline">
+                        <input type="hidden" name="ruta" value="{{ imagen.url }}">
+                        <button type="submit" class="btn btn-primary">Ver imagen</button>
+                    </form>
+                    <span>{{ imagen.url }}</span>
+                </li>
+                {% else %}
+                    <li class="list-group-item text-center">No tienes imágenes cargadas.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</main>
+
+{% endblock %}

@@ -1,0 +1,14 @@
+Issue 2:
+
+Severidad: Critical
+
+Descripción: Se están utilizando valores literales duplicados para el tipo de contenido 'image/png' en varias rutas del código.
+
+Impacto: La duplicación de valores literales dificulta el mantenimiento del código y aumenta el riesgo de introducir errores si es necesario modificar dicho valor en el futuro. Si se cambia el tipo MIME en algún momento, será necesario actualizar cada instancia de este valor en lugar de modificarlo en un solo lugar, lo que aumenta la probabilidad de inconsistencias.
+
+Recomendación de SonarCloud: Se recomienda definir una constante para valores que se repiten en múltiples lugares del código. Esto mejora la mantenibilidad y reduce la posibilidad de errores a largo plazo.
+
+Acción a realizar:
+
+Se creará una constante IMAGE_MIME_TYPE al principio del archivo para almacenar el valor 'image/png'.
+El código se actualizará para usar esta constante en lugar de duplicar el valor 'image/png' en cada instancia. Esto mejorará la legibilidad y facilitará futuras modificaciones al código.

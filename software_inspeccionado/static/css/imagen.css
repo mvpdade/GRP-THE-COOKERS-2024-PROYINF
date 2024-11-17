@@ -1,0 +1,170 @@
+
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to right, #e0f7fa, #fff);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+
+.custom-header {
+    background-color: #1b91db;
+    color: #FFFFFF;
+    height: 80px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+}
+
+
+.custom-image {
+    width: 100%;
+    height: auto;
+    max-height: 475px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.image-box {
+    width: 600px;
+    margin: 20px auto;
+}
+
+#dicom-image {
+    max-width: 100%;
+}
+
+
+.custom-btn {
+    padding: 10px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.custom-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.custom-submit {
+    width: 200px;
+}
+
+.custom-btn-primary {
+    background-color: #1b91db;
+}
+
+.custom-btn-primary:hover {
+    background-color: #155b8a;
+}
+
+.custom-btn-secondary {
+    background-color: #6c757d;
+}
+
+.custom-btn-secondary:hover {
+    background-color: #565d64;
+}
+
+.custom-footer {
+    background-color: #1b91db;
+    color: white;
+    padding: 10px 0;
+    font-size: 14px;
+    margin-top: auto;
+    width: 100%;
+    position: relative;
+    clear: both;
+}
+
+
+.card {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.custom-aside {
+    background-color: #8e8f90;
+    padding: 15px;
+    width: 250px;
+    position: fixed;
+    top: 80px;
+    bottom: 0;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 999;
+}
+
+.custom-aside-item {
+    margin-bottom: 10px;
+}
+
+.custom-aside-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px;
+    display: block;
+    transition: background-color 0.3s ease;
+}
+
+.custom-aside-link:hover {
+    background-color: #155b8a;
+    color: #e0f7fa;
+}
+
+
+.content-area {
+    margin-left: 250px;
+    padding: 100px 20px 20px;
+    flex-grow: 1;
+}
+
+
+@media (max-width: 768px) {
+    .custom-btn {
+        width: 100%;
+    }
+
+    .custom-image {
+        max-height: 300px;
+    }
+
+    .image-box {
+        width: 100%;
+    }
+
+    .custom-aside {
+        width: 100%;
+        position: relative;
+        padding: 10px;
+    }
+
+    .content-area {
+        margin-left: 0;
+        padding: 10px;
+    }
+}
+
+
+html {
+    height: 100%;
+}
+
+footer {
+    clear: both;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    height: auto;
+}
