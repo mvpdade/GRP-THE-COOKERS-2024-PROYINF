@@ -1,0 +1,18 @@
+
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.list-group-item span {
+    order: 1; 
+    flex-grow: 1;
+    text-align: right; 
+}
+
+.list-group-item form {
+    order: 0; 
+    margin-right: 10px;
+}
