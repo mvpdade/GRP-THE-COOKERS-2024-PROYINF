@@ -1,0 +1,1 @@
+Luego de la revision en base a la primera inspeccion, solo se mantuvo un issue, el cual no se pudo modificar ya que el cambio llevaria a una incorrecta funcionalidad del software.

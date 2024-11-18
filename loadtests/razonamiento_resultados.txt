@@ -1,0 +1,9 @@
+El resultado esperado de la prueba era un tiempo de respuesta menor a 300 ms para 50 hilos bombardeando el login durante 30 segundos.
+
+La razón por la cual se alcanza el resultado esperado, es decir, un tiempo de respuesta promedio de 166,53 ms, es que el sistema está bien optimizado para manejar múltiples hilos simultáneamente, y el código del backend es eficiente y no presenta cuellos de botella, lo que permite procesar las solicitudes de manera rápida incluso bajo una carga elevada.
+
+
+
+
+
+
